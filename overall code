@@ -1,0 +1,152 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import os
+
+csv_file = os.path.join(path, "Iris.csv")
+df = pd.read_csv(csv_file)
+
+# Remove ID column
+df = df.drop("Id", axis=1)
+
+print(df.head())
+print(df.info())
+
+print(df.describe())
+
+print(df.isnull().sum())
+plt.figure(figsize=(6,4))
+
+sns.countplot(
+    data=df,
+    x="Species",
+    hue="Species",
+    palette="Set2",
+    legend=False
+)
+
+plt.title("Distribution of Iris Species")
+plt.xlabel("Species")
+plt.ylabel("Count")
+
+plt.show()
+sns.pairplot(
+    df,
+    hue="Species",
+    palette="Set1"
+)
+
+plt.show()
+from sklearn.preprocessing import LabelEncoder
+
+df1 = df.copy()
+
+encoder = LabelEncoder()
+
+df1["Species"] = encoder.fit_transform(df1["Species"])
+plt.figure(figsize=(8,6))
+
+sns.heatmap(
+    df1.corr(),
+    annot=True,
+    cmap="coolwarm",
+    linewidths=0.5
+)
+
+plt.title("Correlation Heatmap")
+
+plt.show()
+plt.figure(figsize=(12,6))
+
+plt.subplot(2,2,1)
+sns.boxplot(data=df, x="Species", y="SepalLengthCm")
+
+plt.subplot(2,2,2)
+sns.boxplot(data=df, x="Species", y="SepalWidthCm")
+
+plt.subplot(2,2,3)
+sns.boxplot(data=df, x="Species", y="PetalLengthCm")
+
+plt.subplot(2,2,4)
+sns.boxplot(data=df, x="Species", y="PetalWidthCm")
+
+plt.tight_layout()
+
+plt.show()
+df.hist(
+    figsize=(10,8),
+    bins=20,
+    edgecolor="black"
+)
+
+plt.suptitle("Feature Distributions")
+
+plt.show()
+plt.figure(figsize=(8,6))
+
+sns.scatterplot(
+    data=df,
+    x="SepalLengthCm",
+    y="PetalLengthCm",
+    hue="Species",
+    s=100
+)
+
+plt.title("Sepal Length vs Petal Length")
+
+plt.show()
+plt.figure(figsize=(10,5))
+
+sns.violinplot(
+    data=df,
+    x="Species",
+    y="PetalLengthCm",
+    hue="Species",
+    palette="Pastel1",
+    legend=False
+)
+
+plt.title("Petal Length Distribution")
+
+plt.show()
+plt.figure(figsize=(8,6))
+
+sns.kdeplot(
+    data=df,
+    x="PetalLengthCm",
+    hue="Species",
+    fill=True
+)
+
+plt.title("Density Plot of Petal Length")
+
+plt.show()
+corr = df1.corr()
+
+print(corr)
+import numpy as np
+
+avg = df.groupby("Species").mean()
+
+categories = avg.columns
+N = len(categories)
+
+angles = np.linspace(0, 2*np.pi, N, endpoint=False).tolist()
+angles += angles[:1]
+
+fig = plt.figure(figsize=(8,8))
+ax = plt.subplot(111, polar=True)
+
+for species in avg.index:
+    values = avg.loc[species].tolist()
+    values += values[:1]
+    ax.plot(angles, values, label=species)
+    ax.fill(angles, values, alpha=0.1)
+
+ax.set_xticks(angles[:-1])
+ax.set_xticklabels(categories)
+
+plt.title("Average Feature Comparison")
+plt.legend(loc="upper right")
+
+plt.show()
