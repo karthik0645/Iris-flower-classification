@@ -1,0 +1,10 @@
+# Display downloaded files
+print(os.listdir(path))
+
+load cv file.
+
+csv_file = os.path.join(path, "Iris.csv")   # Change filename if different
+
+df = pd.read_csv(csv_file)
+
+print(df.head())
