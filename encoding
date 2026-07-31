@@ -1,0 +1,16 @@
+print(df.shape)
+
+print(df.info())
+
+print(df.describe())
+
+print(df['Species'].value_counts())
+df = df.drop("Id", axis=1)
+encoder = LabelEncoder()
+
+df["Species"] = encoder.fit_transform(df["Species"])
+
+print(df.head())
+Iris-setosa      → 0
+Iris-versicolor  → 1
+Iris-virginica   → 2
