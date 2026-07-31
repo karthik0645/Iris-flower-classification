@@ -1,0 +1,12 @@
+from sklearn.linear_model import LogisticRegression
+
+model = LogisticRegression(max_iter=200)
+from sklearn.neighbors import KNeighborsClassifier
+
+model = KNeighborsClassifier(n_neighbors=3)
+from sklearn.ensemble import RandomForestClassifier
+
+model = RandomForestClassifier(random_state=42)
+from sklearn.svm import SVC
+
+model = SVC()
